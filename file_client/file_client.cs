@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Transportlaget;
 using Library;
+using Linklaget;
 
 namespace Application
 {
@@ -53,7 +55,15 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
-			new file_client(args);
+			//new file_client(args);
+
+
+            // Link lag test
+            var linkLag = new Link(1000, "client");
+		    var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
+
+            linkLag.send(toSend,7);
+
 		}
 	}
 }

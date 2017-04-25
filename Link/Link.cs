@@ -35,11 +35,11 @@ namespace Linklaget
 			#if DEBUG
 				if(APP.Equals("FILE_SERVER"))
 				{
-					serialPort = new SerialPort("/dev/ttySn0",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 				}
 				else
 				{
-					serialPort = new SerialPort("/dev/ttySn1",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 				}
 			#else
 				serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
@@ -118,8 +118,80 @@ namespace Linklaget
         /// <param name='size'>
         /// Size.
         /// </param>
-        public static int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
+        //public int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
+        //{
+        //    var bytesToRead = serialPort.BytesToRead;
+
+        //    for (int i = 0; i < bytesToRead; i++)
+        //    {
+                
+        //    }
+
+
+        //    // til sammenligning
+        //    var B = (byte)'B';
+        //    var C = (byte)'C';
+        //    var D = (byte)'D';
+
+
+        //    // vi finder start af vores frame
+        //    int start = 0;
+        //    while (buf[start] != DELIMITER)
+        //    {
+        //        start++;
+        //    }
+
+        //    // vi finder slut af vores frame
+        //    int slut = start + 1;
+        //    while (buf[slut] != DELIMITER)
+        //    {
+        //        slut++;
+        //    }
+
+        //    // temp liste til vores "dekrypterede" besked
+        //    var temp = new List<byte>();
+
+        //    // Vi er ikke interesseret i vores delimitter
+        //    start++;
+
+        //    // array løbes igennem og "dekrypteres"
+        //    for (int i = 0; start < slut; start++, i++)
+        //    {
+        //        if (buf[start] == B)
+        //        {
+        //            if (buf[start + 1] == C)
+        //            {
+        //                temp.Add(DELIMITER); // DELIMITER = A
+        //                start++;
+        //            }
+        //            else if (buf[start + 1] == D)
+        //            {
+        //                temp.Add(B);
+        //                start++;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            temp.Add(buf[start]);
+        //        }
+        //    }
+
+        //    // buf rettes
+        //    buf = temp.ToArray();
+
+        //    return buf.Length;
+        //}
+
+
+        public int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
         {
+            
+            var bytesToRead = serialPort.BytesToRead;
+            byte[] received = new byte[bytesToRead];
+
+            serialPort.Read(received, 0, bytesToRead);
+
+            
             // til sammenligning
             var B = (byte)'B';
             var C = (byte)'C';
@@ -128,14 +200,14 @@ namespace Linklaget
 
             // vi finder start af vores frame
             int start = 0;
-            while (buf[start] != DELIMITER)
+            while (received[start] != DELIMITER)
             {
                 start++;
             }
 
             // vi finder slut af vores frame
             int slut = start + 1;
-            while (buf[slut] != DELIMITER)
+            while (received[slut] != DELIMITER)
             {
                 slut++;
             }
@@ -147,16 +219,16 @@ namespace Linklaget
             start++;
 
             // array løbes igennem og "dekrypteres"
-            for (int i = 0; start < slut; start++, i++)
+            for (; start < slut; start++)
             {
-                if (buf[start] == B)
+                if (received[start] == B)
                 {
-                    if (buf[start + 1] == C)
+                    if (received[start + 1] == C)
                     {
                         temp.Add(DELIMITER); // DELIMITER = A
                         start++;
                     }
-                    else if (buf[start + 1] == D)
+                    else if (received[start + 1] == D)
                     {
                         temp.Add(B);
                         start++;
@@ -173,5 +245,6 @@ namespace Linklaget
 
             return buf.Length;
         }
+
     }
 }
