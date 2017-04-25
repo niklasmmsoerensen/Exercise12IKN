@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Transportlaget;
 using Library;
+using Linklaget;
 
 namespace Application
 {
@@ -19,7 +20,10 @@ namespace Application
 		/// </summary>
 		private file_server ()
 		{
-			// TO DO Your own code
+			Link myLink = new Link(100, "FILE_SERVER");
+			byte[] toSend = Encoding.ASCII.GetBytes("GHTJAPDB");
+
+			myLink.send(toSend, 8);
 		}
 
 		/// <summary>

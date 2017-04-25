@@ -33,11 +33,11 @@ namespace Linklaget
 			#if DEBUG
 				if(APP.Equals("FILE_SERVER"))
 				{
-					serialPort = new SerialPort("/dev/ttySn0",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 				}
 				else
 				{
-					serialPort = new SerialPort("/dev/ttySn1",115200,Parity.None,8,StopBits.One);
+					serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
 				}
 			#else
 				serialPort = new SerialPort("/dev/ttyS1",115200,Parity.None,8,StopBits.One);
@@ -67,7 +67,7 @@ namespace Linklaget
 		{
             // TO DO Your own code
             int i = 1;
-            char c;
+
             byte[] sendBuf = new byte[size * 2 + 2];
 
             sendBuf[0] = DELIMITER;
@@ -100,11 +100,16 @@ namespace Linklaget
                 Console.Write(Convert.ToChar(x));
             }
             Console.WriteLine();
+
             foreach (var x in sendBuf)
             {
                 Console.Write(Convert.ToChar(x));
             }
             Console.WriteLine();
+
+			serialPort.Write (sendBuf, 0, sendBuf.Length);
+
+			//serialPort.Close ();
         }
 
 		/// <summary>
