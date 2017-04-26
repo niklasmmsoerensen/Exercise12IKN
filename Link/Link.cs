@@ -123,96 +123,35 @@ namespace Linklaget
         /// <param name='size'>
         /// Size.
         /// </param>
-        //public int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
-        //{
-        //    var bytesToRead = serialPort.BytesToRead;
-
-        //    for (int i = 0; i < bytesToRead; i++)
-        //    {
-                
-        //    }
-
-
-        //    // til sammenligning
-        //    var B = (byte)'B';
-        //    var C = (byte)'C';
-        //    var D = (byte)'D';
-
-
-        //    // vi finder start af vores frame
-        //    int start = 0;
-        //    while (buf[start] != DELIMITER)
-        //    {
-        //        start++;
-        //    }
-
-        //    // vi finder slut af vores frame
-        //    int slut = start + 1;
-        //    while (buf[slut] != DELIMITER)
-        //    {
-        //        slut++;
-        //    }
-
-        //    // temp liste til vores "dekrypterede" besked
-        //    var temp = new List<byte>();
-
-        //    // Vi er ikke interesseret i vores delimitter
-        //    start++;
-
-        //    // array løbes igennem og "dekrypteres"
-        //    for (int i = 0; start < slut; start++, i++)
-        //    {
-        //        if (buf[start] == B)
-        //        {
-        //            if (buf[start + 1] == C)
-        //            {
-        //                temp.Add(DELIMITER); // DELIMITER = A
-        //                start++;
-        //            }
-        //            else if (buf[start + 1] == D)
-        //            {
-        //                temp.Add(B);
-        //                start++;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            temp.Add(buf[start]);
-        //        }
-        //    }
-
-        //    // buf rettes
-        //    buf = temp.ToArray();
-
-        //    return buf.Length;
-        //}
-
-
-        public int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
-        {
-            
-            var bytesToRead = serialPort.BytesToRead;
-            byte[] received = new byte[bytesToRead];
-
-            serialPort.Read(received, 0, bytesToRead);
-
-            
+        public int receive(ref byte[] buf)
+        {            
             // til sammenligning
             var B = (byte)'B';
             var C = (byte)'C';
             var D = (byte)'D';
 
+            // hvor mange bytes ligger der klar i bufferen
+            var bytesToRead = serialPort.BytesToRead;
+
+            // er der noget at læse
+            while (bytesToRead == 0)
+            {
+                bytesToRead = serialPort.BytesToRead;
+            }
+
+            buffer = new byte[bytesToRead];
+            serialPort.Read(buffer, 0, bytesToRead);
 
             // vi finder start af vores frame
             int start = 0;
-            while (received[start] != DELIMITER)
+            while (buffer[start] != DELIMITER)
             {
                 start++;
             }
 
             // vi finder slut af vores frame
             int slut = start + 1;
-            while (received[slut] != DELIMITER)
+            while (buffer[slut] != DELIMITER)
             {
                 slut++;
             }
@@ -223,17 +162,17 @@ namespace Linklaget
             // Vi er ikke interesseret i vores delimitter
             start++;
 
-            // array løbes igennem og "dekrypteres"
+            // array l?es igennem og "dekrypteres"
             for (; start < slut; start++)
             {
-                if (received[start] == B)
+                if (buffer[start] == B)
                 {
-                    if (received[start + 1] == C)
+                    if (buffer[start + 1] == C)
                     {
                         temp.Add(DELIMITER); // DELIMITER = A
                         start++;
                     }
-                    else if (received[start + 1] == D)
+                    else if (buffer[start + 1] == D)
                     {
                         temp.Add(B);
                         start++;
@@ -241,7 +180,7 @@ namespace Linklaget
                 }
                 else
                 {
-                    temp.Add(buf[start]);
+                    temp.Add(buffer[start]);
                 }
             }
 
