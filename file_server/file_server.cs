@@ -62,7 +62,7 @@ namespace Application
 
 		    foreach (var b in toReceive)
 		    {
-		        Console.WriteLine(b);
+		        Console.Write((char)b);
 		    }
 
 		}

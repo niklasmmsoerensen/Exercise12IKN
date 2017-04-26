@@ -97,17 +97,17 @@ namespace Linklaget
             }
             sendBuf[i] = DELIMITER;
 
-            foreach (var x in buf)
-            {
-                Console.Write(Convert.ToChar(x));
-            }
-            Console.WriteLine();
+            //foreach (var x in buf)
+            //{
+            //    Console.Write(Convert.ToChar(x));
+            //}
+            //Console.WriteLine();
 
-            foreach (var x in sendBuf)
-            {
-                Console.Write(Convert.ToChar(x));
-            }
-            Console.WriteLine();
+            //foreach (var x in sendBuf)
+            //{
+            //    Console.Write(Convert.ToChar(x));
+            //}
+            //Console.WriteLine();
 
 			serialPort.Write (sendBuf, 0, sendBuf.Length);
 
