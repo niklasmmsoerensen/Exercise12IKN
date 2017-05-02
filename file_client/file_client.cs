@@ -46,13 +46,14 @@ namespace Application
 		{
             FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
 
+            transport = new Transport(BUFSIZE, APP);
             long receivedBytes = 0;
-            byte[] data = new byte[1000];
+            byte[] data = new byte[BUFSIZE];
             int count = 0;
 
-		    //while (Int32.Parse(fileSize) > receivedBytes) //fi
+		    //while (Int32.Parse(fileSize) > receivedBytes) 
 		    //{
-		    //    count = transport.receive(ref data);
+		        count = transport.receive(ref data);
 
 		    //    fs.Write(data, 0, count);
 		    //    receivedBytes += count;

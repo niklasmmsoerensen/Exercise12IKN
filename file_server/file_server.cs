@@ -43,8 +43,10 @@ namespace Application
             using (FileStream SourceStream = File.Open(fileName, FileMode.Open))
             {
                 long sentBytes = 0;
-                byte[] data = new byte[1000];
+                byte[] data = new byte[BUFSIZE];
                 int count = 0;
+                transport = new Transport(BUFSIZE,APP);
+
                 Console.WriteLine("Sending file to client...");
                 while (fileSize > sentBytes)
                 {
