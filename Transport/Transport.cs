@@ -143,7 +143,24 @@ namespace Transportlaget
 		/// </param>
 		public int receive (ref byte[] buf)
 		{
-			// TO DO Your own code
+			// receieve data selv med brug af link laget
+            // Kør data igennem checkchecksum funktion
+            // kald funktionen sendack og brug returværdien fra checkchecksum som parameter
+            // muligvis noget loop
+
+		    bool status;
+		    do
+		    {
+		        int size = link.receive(ref buffer);
+		        status = checksum.checkChecksum(buffer, size);
+		        sendAck(status);
+
+		        if (status == true)
+		        {
+		            return size;
+		        }
+		    } while (status == false);
+
 			return 1;
 		}
 	}
