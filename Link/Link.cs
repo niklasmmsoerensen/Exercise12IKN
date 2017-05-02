@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Ports;
 
-/// <summary>
-/// Link.
-/// </summary>
+    /// <summary>
+    /// Link.
+    /// </summary>
 namespace Linklaget
 {
 	/// <summary>
