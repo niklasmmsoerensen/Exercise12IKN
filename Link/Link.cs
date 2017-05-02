@@ -97,17 +97,17 @@ namespace Linklaget
             }
             sendBuf[i] = DELIMITER;
 
-            foreach (var x in buf)
-            {
-                Console.Write(Convert.ToChar(x));
-            }
-            Console.WriteLine();
+            //foreach (var x in buf)
+            //{
+            //    Console.Write(Convert.ToChar(x));
+            //}
+            //Console.WriteLine();
 
-            foreach (var x in sendBuf)
-            {
-                Console.Write(Convert.ToChar(x));
-            }
-            Console.WriteLine();
+            //foreach (var x in sendBuf)
+            //{
+            //    Console.Write(Convert.ToChar(x));
+            //}
+            //Console.WriteLine();
 
 			serialPort.Write (sendBuf, 0, sendBuf.Length);
 
@@ -123,24 +123,35 @@ namespace Linklaget
         /// <param name='size'>
         /// Size.
         /// </param>
-        public static int receive(ref byte[] buf) // funktionen crasher hvis buf ikke er omkranset af 2 A'er. Er dette mon et problem? hmm
-        {
+        public int receive(ref byte[] buf)
+        {            
             // til sammenligning
             var B = (byte)'B';
             var C = (byte)'C';
             var D = (byte)'D';
 
+            // hvor mange bytes ligger der klar i bufferen
+            var bytesToRead = serialPort.BytesToRead;
+
+            // er der noget at læse
+            while (bytesToRead == 0)
+            {
+                bytesToRead = serialPort.BytesToRead;
+            }
+
+            buffer = new byte[bytesToRead];
+            serialPort.Read(buffer, 0, bytesToRead);
 
             // vi finder start af vores frame
             int start = 0;
-            while (buf[start] != DELIMITER)
+            while (buffer[start] != DELIMITER)
             {
                 start++;
             }
 
             // vi finder slut af vores frame
             int slut = start + 1;
-            while (buf[slut] != DELIMITER)
+            while (buffer[slut] != DELIMITER)
             {
                 slut++;
             }
@@ -151,17 +162,17 @@ namespace Linklaget
             // Vi er ikke interesseret i vores delimitter
             start++;
 
-            // array l?s igennem og "dekrypteres"
-            for (int i = 0; start < slut; start++, i++)
+            // array l?es igennem og "dekrypteres"
+            for (; start < slut; start++)
             {
-                if (buf[start] == B)
+                if (buffer[start] == B)
                 {
-                    if (buf[start + 1] == C)
+                    if (buffer[start + 1] == C)
                     {
                         temp.Add(DELIMITER); // DELIMITER = A
                         start++;
                     }
-                    else if (buf[start + 1] == D)
+                    else if (buffer[start + 1] == D)
                     {
                         temp.Add(B);
                         start++;
@@ -169,7 +180,7 @@ namespace Linklaget
                 }
                 else
                 {
-                    temp.Add(buf[start]);
+                    temp.Add(buffer[start]);
                 }
             }
 
@@ -178,5 +189,6 @@ namespace Linklaget
 
             return buf.Length;
         }
+
     }
 }

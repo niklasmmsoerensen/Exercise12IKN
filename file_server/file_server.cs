@@ -51,7 +51,20 @@ namespace Application
 		/// </param>
 		public static void Main (string[] args)
 		{
-			new file_server();
+            //new file_server();
+
+            // Link lag test
+            var linkLag = new Link(1000, "server");
+
+		    var toReceive = new byte[10];
+
+		    linkLag.receive(ref toReceive);
+
+		    foreach (var b in toReceive)
+		    {
+		        Console.Write((char)b);
+		    }
+
 		}
 	}
 }
