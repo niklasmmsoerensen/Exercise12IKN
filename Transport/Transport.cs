@@ -114,9 +114,25 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
-			 
+			// TO DO Your own code
+			int counter = 0;
+			do {
+				checksum.calcChecksum (buf, size);
+				Array.Resize (buf, buf.Length + 2); //resize buf to fit SEQNO and TYPE
+				var temp = new byte[buf.Length]; //temp array same size as buf
 
-             
+				Array.Copy (buf, 0, temp, 2, buf.Length); //copy buf to temp while shifting bytes 2 index to right
+
+				temp [(int)TransCHKSUM.SEQNO] = (byte)seqNo;
+				temp [(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
+
+				link.send (temp, temp.Length);
+				counter++;
+			} while(!receiveAck () && counter < 5);
+			if (counter > 5) { //timeout
+				Console.WriteLine("Timeout from send, counter > 5");
+			}
+			old_seqNo = seqNo;
 		}
 
 		/// <summary>
