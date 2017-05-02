@@ -151,7 +151,7 @@ namespace Linklaget
             // Vi er ikke interesseret i vores delimitter
             start++;
 
-            // array løbes igennem og "dekrypteres"
+            // array l?s igennem og "dekrypteres"
             for (int i = 0; start < slut; start++, i++)
             {
                 if (buf[start] == B)
