@@ -40,16 +40,30 @@ namespace Application
 		/// </param>
 		private void sendFile(String fileName, long fileSize, Transport transport)
 		{
-			// TO DO Your own code
+            using (FileStream SourceStream = File.Open(fileName, FileMode.Open))
+            {
+                long sentBytes = 0;
+                byte[] data = new byte[1000];
+                int count = 0;
+                Console.WriteLine("Sending file to client...");
+                while (fileSize > sentBytes)
+                {
+                    count = SourceStream.Read(data, 0, data.Length);
+                    transport.send(data,count);
+                    sentBytes += count;
+                    Console.WriteLine(sentBytes);
+                }
+                Console.WriteLine("File sent! Bytes sent: {0}", sentBytes);
+            }
 		}
 
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// The command-line arguments.
-		/// </param>
-		public static void Main (string[] args)
+        /// <summary>
+        /// The entry point of the program, where the program control starts and ends.
+        /// </summary>
+        /// <param name='args'>
+        /// The command-line arguments.
+        /// </param>
+        public static void Main (string[] args)
 		{
             //new file_server();
 

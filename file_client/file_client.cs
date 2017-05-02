@@ -44,16 +44,32 @@ namespace Application
 		/// </param>
 		private void receiveFile (String fileName, Transport transport)
 		{
-			// TO DO Your own code
-		}
+            FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
 
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// First argument: Filname
-		/// </param>
-		public static void Main (string[] args)
+            long receivedBytes = 0;
+            byte[] data = new byte[1000];
+            int count = 0;
+
+		    //while (Int32.Parse(fileSize) > receivedBytes) //fi
+		    //{
+		    //    count = transport.receive(ref data);
+
+		    //    fs.Write(data, 0, count);
+		    //    receivedBytes += count;
+		    //    Console.WriteLine(receivedBytes);
+		    //}
+
+        }
+
+
+
+        /// <summary>
+        /// The entry point of the program, where the program control starts and ends.
+        /// </summary>
+        /// <param name='args'>
+        /// First argument: Filname
+        /// </param>
+        public static void Main (string[] args)
 		{
 			//new file_client(args);
 
