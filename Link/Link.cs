@@ -124,63 +124,45 @@ namespace Linklaget
         /// Size.
         /// </param>
         public int receive(ref byte[] buf)
-        {            
+        {
             // til sammenligning
             var B = (byte)'B';
             var C = (byte)'C';
             var D = (byte)'D';
 
-            // hvor mange bytes ligger der klar i bufferen
-            var bytesToRead = serialPort.BytesToRead;
-
-            // er der noget at læse
-			while (bytesToRead < 1500)
-            {
-                bytesToRead = serialPort.BytesToRead;
-            }
-
-			serialPort.Read(buffer, 0, bytesToRead);
-
-            // vi finder start af vores frame
-            int start = 0;
-            while (buffer[start] != DELIMITER)
-            {
-                start++;
-            }
-
-            // vi finder slut af vores frame
-            int slut = start + 1;
-            while (buffer[slut] != DELIMITER)
-            {
-                slut++;
-            }
-
-            // temp liste til vores "dekrypterede" besked
             var temp = new List<byte>();
 
-            // Vi er ikke interesseret i vores delimitter
-            start++;
 
-            // array l?es igennem og "dekrypteres"
-            for (; start < slut; start++)
+            serialPort.Read(buffer, 0, 1);
+            while (buffer[0] != DELIMITER)
             {
-                if (buffer[start] == B)
+                serialPort.Read(buffer, 0, 1);
+            }
+
+            serialPort.Read(buffer, 0, 1);
+            while (buffer[0] != DELIMITER)
+            {
+                if (buffer[0] == B)
                 {
-                    if (buffer[start + 1] == C)
+                    serialPort.Read(buffer, 0, 1);
+                    if (buffer[0] == C)
                     {
                         temp.Add(DELIMITER); // DELIMITER = A
-                        start++;
                     }
-                    else if (buffer[start + 1] == D)
+                    else if (buffer[0] == D)
                     {
                         temp.Add(B);
-                        start++;
+                    }
+                    else
+                    {
+                        throw new Exception("Recieved message not formatted correctly");
                     }
                 }
                 else
                 {
-                    temp.Add(buffer[start]);
+                    temp.Add(buffer[0]);
                 }
+                serialPort.Read(buffer, 0, 1);
             }
 
             // buf rettes
@@ -188,6 +170,75 @@ namespace Linklaget
 
             return buf.Length;
         }
+
+
+
+
+        //     public int receive(ref byte[] buf)
+        //     {            
+        //         // til sammenligning
+        //         var B = (byte)'B';
+        //         var C = (byte)'C';
+        //         var D = (byte)'D';
+
+        //         // hvor mange bytes ligger der klar i bufferen
+        //         var bytesToRead = serialPort.BytesToRead;
+
+        //         // er der noget at læse
+        //while (bytesToRead < 1500)
+        //         {
+        //             bytesToRead = serialPort.BytesToRead;
+        //         }
+
+        //serialPort.Read(buffer, 0, bytesToRead);
+
+        //         // vi finder start af vores frame
+        //         int start = 0;
+        //         while (buffer[start] != DELIMITER)
+        //         {
+        //             start++;
+        //         }
+
+        //         // vi finder slut af vores frame
+        //         int slut = start + 1;
+        //         while (buffer[slut] != DELIMITER)
+        //         {
+        //             slut++;
+        //         }
+
+        //         // temp liste til vores "dekrypterede" besked
+        //         var temp = new List<byte>();
+
+        //         // Vi er ikke interesseret i vores delimitter
+        //         start++;
+
+        //         // array l?es igennem og "dekrypteres"
+        //         for (; start < slut; start++)
+        //         {
+        //             if (buffer[start] == B)
+        //             {
+        //                 if (buffer[start + 1] == C)
+        //                 {
+        //                     temp.Add(DELIMITER); // DELIMITER = A
+        //                     start++;
+        //                 }
+        //                 else if (buffer[start + 1] == D)
+        //                 {
+        //                     temp.Add(B);
+        //                     start++;
+        //                 }
+        //             }
+        //             else
+        //             {
+        //                 temp.Add(buffer[start]);
+        //             }
+        //         }
+
+        //         // buf rettes
+        //         buf = temp.ToArray();
+
+        //         return buf.Length;
+        //     }
 
     }
 }
