@@ -16,22 +16,26 @@ namespace Application
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_CLIENT";
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="file_client"/> class.
-		/// 
-		/// file_client metoden opretter en peer-to-peer forbindelse
-		/// Sender en forspÃ¸rgsel for en bestemt fil om denne findes pÃ¥ serveren
-		/// Modtager filen hvis denne findes eller en besked om at den ikke findes (jvf. protokol beskrivelse)
-		/// Lukker alle streams og den modtagede fil
-		/// Udskriver en fejl-meddelelse hvis ikke antal argumenter er rigtige
-		/// </summary>
-		/// <param name='args'>
-		/// Filnavn med evtuelle sti.
-		/// </param>
-	    private file_client(String[] args)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="file_client"/> class.
+        /// 
+        /// file_client metoden opretter en peer-to-peer forbindelse
+        /// Sender en forspÃ¸rgsel for en bestemt fil om denne findes pÃ¥ serveren
+        /// Modtager filen hvis denne findes eller en besked om at den ikke findes (jvf. protokol beskrivelse)
+        /// Lukker alle streams og den modtagede fil
+        /// Udskriver en fejl-meddelelse hvis ikke antal argumenter er rigtige
+        /// </summary>
+        /// <param name='args'>
+        /// Filnavn med evtuelle sti.
+        /// </param>
+        private file_client(String[] args)
 	    {
-	    	// TO DO Your own code
-	    }
+            Transport t = new Transport(BUFSIZE, APP);
+	        string fileName = args[0];
+            receiveFile(fileName,t);
+
+        }
 
 		/// <summary>
 		/// Receives the file.
@@ -44,25 +48,41 @@ namespace Application
 		/// </param>
 		private void receiveFile (String fileName, Transport transport)
 		{
-			// TO DO Your own code
-		}
+            FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
 
-		/// <summary>
-		/// The entry point of the program, where the program control starts and ends.
-		/// </summary>
-		/// <param name='args'>
-		/// First argument: Filname
-		/// </param>
-		public static void Main (string[] args)
+
+      //      long receivedBytes = 0;
+      //      byte[] data = new byte[BUFSIZE];
+
+		    //int count = transport.receive(ref data);
+            
+		    //while (data.Length > receivedBytes) 
+		    //{
+      //          fs.Write(data, 0, count);
+      //          receivedBytes += count;
+      //          Console.WriteLine(receivedBytes);
+      //      }
+
+        }
+
+
+
+        /// <summary>
+        /// The entry point of the program, where the program control starts and ends.
+        /// </summary>
+        /// <param name='args'>
+        /// First argument: Filname
+        /// </param>
+        public static void Main (string[] args)
 		{
-			//new file_client(args);
+			new file_client(args);
 
 
-            // Link lag test
-            var linkLag = new Link(1000, "client");
-		    var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
+      //      // Link lag test
+      //      var linkLag = new Link(1000, "client");
+		    //var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
 
-            linkLag.send(toSend,7);
+      //      linkLag.send(toSend,7);
 
 		}
 	}
