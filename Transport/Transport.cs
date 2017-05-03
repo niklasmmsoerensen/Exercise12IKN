@@ -123,8 +123,6 @@ namespace Transportlaget
 				buffer[(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
 				Array.Copy(buf, 0, buffer, 4, buf.Length);
 
-
-
 				checksum.calcChecksum (ref buffer, size);
 				/*
 				if(++errorCount == 3) {
@@ -151,21 +149,25 @@ namespace Transportlaget
 		public int receive (ref byte[] buf)
 		{
 			// receieve data selv med brug af link laget
-            // Kør data igennem checkchecksum funktion
-            // kald funktionen sendack og brug returværdien fra checkchecksum som parameter
+            // Kï¿½r data igennem checkchecksum funktion
+            // kald funktionen sendack og brug returvï¿½rdien fra checkchecksum som parameter
             // muligvis noget loop
 
-		    bool status;
+		    bool status = false;
 		    do
 		    {
 		        int size = link.receive(ref buffer);
 		        status = checksum.checkChecksum(buffer, size);
+
 		        sendAck(status);
 
 		        if (status == true)
 		        {
+					Array.Copy(buffer, 4, buf, 0, buffer.Length - 4);
+					//buf = buffer;
 		            return size;
 		        }
+
 		    } while (status == false);
 
 			return 1;

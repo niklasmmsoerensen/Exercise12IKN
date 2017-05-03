@@ -36,7 +36,6 @@ namespace Transportlaget
 		{
 			byte[] buffer = new byte[size-2];
 			long sum = 0;
-
 			Array.Copy(buf, 2, buffer, 0, buffer.Length);
 			sum = checksum(buffer);
 			buf[(int)TransCHKSUM.CHKSUMHIGH] = (byte)((sum >> 8) & 255);
