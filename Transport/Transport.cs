@@ -56,7 +56,7 @@ namespace Transportlaget
 			link = new Link(BUFSIZE+(int)TransSize.ACKSIZE, APP);
 			checksum = new Checksum();
 			buffer = new byte[BUFSIZE+(int)TransSize.ACKSIZE];
-			seqNo = 0;
+			seqNo = 1;
 			old_seqNo = DEFAULT_SEQNO;
 			errorCount = 0;
 			dataReceived = false;
@@ -75,7 +75,8 @@ namespace Transportlaget
 
 			if (recvSize == (int)TransSize.ACKSIZE) {
 				dataReceived = false;
-				if (!checksum.checkChecksum (buffer, (int)TransSize.ACKSIZE) ||
+				bool checksumResult = checksum.checkChecksum (buffer, (int)TransSize.ACKSIZE);
+				if (!checksumResult ||
 				  buffer [(int)TransCHKSUM.SEQNO] != seqNo ||
 				  buffer [(int)TransCHKSUM.TYPE] != (int)TransType.ACK)
 				{
@@ -116,23 +117,29 @@ namespace Transportlaget
 		{
 			// TO DO Your own code
 			int counter = 0;
+			int lengthOfBuffer = buffer.Length;
 			do {
-				checksum.calcChecksum (buf, size);
-				Array.Resize (buf, buf.Length + 2); //resize buf to fit SEQNO and TYPE
-				var temp = new byte[buf.Length]; //temp array same size as buf
+				buffer[(int)TransCHKSUM.SEQNO] = (byte)seqNo;
+				buffer[(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
+				Array.Copy(buf, 0, buffer, 4, buf.Length);
 
-				Array.Copy (buf, 0, temp, 2, buf.Length); //copy buf to temp while shifting bytes 2 index to right
 
-				temp [(int)TransCHKSUM.SEQNO] = (byte)seqNo;
-				temp [(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
 
-				link.send (temp, temp.Length);
+				checksum.calcChecksum (ref buffer, size);
+				/*
+				if(++errorCount == 3) {
+					buffer[2]++;
+					Console.WriteLine("NOISE! - Byte #2 is damaged in the first transmission!");
+				}
+*/
+				link.send (buffer, buffer.Length);
 				counter++;
 			} while(!receiveAck () && counter < 5);
 			if (counter > 5) { //timeout
 				Console.WriteLine("Timeout from send, counter > 5");
 			}
 			old_seqNo = seqNo;
+			buffer = new byte[lengthOfBuffer];
 		}
 
 		/// <summary>

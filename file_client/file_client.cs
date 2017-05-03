@@ -56,14 +56,20 @@ namespace Application
 		public static void Main (string[] args)
 		{
 			//new file_client(args);
+			var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
+
+			//transportlag test
+			var transportLag = new Transport (1000, "test");
+			transportLag.send(toSend, 1000);
+			transportLag.send(toSend, 1000);
+			transportLag.send(toSend, 1000);
 
 
+			/*
             // Link lag test
             var linkLag = new Link(1000, "client");
-		    var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
-
             linkLag.send(toSend,7);
-
+			*/
 		}
 	}
 }

@@ -3,12 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{DB485B50-5258-42F1-ABC9-2774EEE3360F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>client</RootNamespace>
     <AssemblyName>file_client</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,7 +50,7 @@
       <Name>LIB</Name>
     </ProjectReference>
     <ProjectReference Include="..\Link\Link.csproj">
-      <Project>{6d10c85b-63e3-416b-a3b8-0e6498b7c1c1}</Project>
+      <Project>{6D10C85B-63E3-416B-A3B8-0E6498B7C1C1}</Project>
       <Name>Link</Name>
     </ProjectReference>
     <ProjectReference Include="..\Transport\Transport.csproj">
