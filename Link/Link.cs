@@ -134,13 +134,12 @@ namespace Linklaget
             var bytesToRead = serialPort.BytesToRead;
 
             // er der noget at læse
-            while (bytesToRead == 0)
+			while (bytesToRead < 1500)
             {
                 bytesToRead = serialPort.BytesToRead;
             }
 
-            buffer = new byte[bytesToRead];
-            serialPort.Read(buffer, 0, bytesToRead);
+			serialPort.Read(buffer, 0, bytesToRead);
 
             // vi finder start af vores frame
             int start = 0;

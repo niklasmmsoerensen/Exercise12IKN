@@ -117,16 +117,13 @@ namespace Transportlaget
 			// TO DO Your own code
 			int counter = 0;
 			do {
-				checksum.calcChecksum (buf, size);
-				Array.Resize (buf, buf.Length + 2); //resize buf to fit SEQNO and TYPE
-				var temp = new byte[buf.Length]; //temp array same size as buf
+				buffer[(int)TransCHKSUM.SEQNO] = (byte)seqNo;
+				buffer[(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
+				Array.Copy(buf, 0, buffer, 2, buf.Length);
 
-				Array.Copy (buf, 0, temp, 2, buf.Length); //copy buf to temp while shifting bytes 2 index to right
+				checksum.calcChecksum (ref buffer, size);
 
-				temp [(int)TransCHKSUM.SEQNO] = (byte)seqNo;
-				temp [(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
-
-				link.send (temp, temp.Length);
+				link.send (buffer, buffer.Length);
 				counter++;
 			} while(!receiveAck () && counter < 5);
 			if (counter > 5) { //timeout
@@ -144,21 +141,25 @@ namespace Transportlaget
 		public int receive (ref byte[] buf)
 		{
 			// receieve data selv med brug af link laget
-            // Kør data igennem checkchecksum funktion
-            // kald funktionen sendack og brug returværdien fra checkchecksum som parameter
+            // Kï¿½r data igennem checkchecksum funktion
+            // kald funktionen sendack og brug returvï¿½rdien fra checkchecksum som parameter
             // muligvis noget loop
 
-		    bool status;
+		    bool status = false;
 		    do
 		    {
 		        int size = link.receive(ref buffer);
 		        status = checksum.checkChecksum(buffer, size);
+
 		        sendAck(status);
 
 		        if (status == true)
 		        {
+					Array.Copy(buffer, 4, buf, 0, buffer.Length - 4);
+					//buf = buffer;
 		            return size;
 		        }
+
 		    } while (status == false);
 
 			return 1;

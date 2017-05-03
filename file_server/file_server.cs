@@ -52,7 +52,26 @@ namespace Application
 		public static void Main (string[] args)
 		{
             //new file_server();
+			var transportLag = new Transport(1000, "test");
+			var toReceive = new byte[1000];
 
+			transportLag.receive (ref toReceive);
+			foreach (var b in toReceive) {
+				Console.Write ((char)b);
+			}
+
+			transportLag.receive (ref toReceive);
+			foreach (var b in toReceive) {
+				Console.Write ((char)b);
+			}
+
+			transportLag.receive (ref toReceive);
+			foreach (var b in toReceive) {
+				Console.Write ((char)b);
+			}
+
+
+			/*
             // Link lag test
             var linkLag = new Link(1000, "server");
 
@@ -64,6 +83,7 @@ namespace Application
 		    {
 		        Console.Write((char)b);
 		    }
+			*/
 
 		}
 	}
