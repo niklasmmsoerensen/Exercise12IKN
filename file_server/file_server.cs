@@ -15,15 +15,19 @@ namespace Application
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_SERVER";
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="file_server"/> class.
-		/// </summary>
-		private file_server ()
-		{
-			Link myLink = new Link(100, "FILE_SERVER");
-			byte[] toSend = Encoding.ASCII.GetBytes("GHTJAPDB");
+        //const int PORT = 9000;
 
-			myLink.send(toSend, 8);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="file_server"/> class.
+        /// </summary>
+        private file_server ()
+		{
+            Transport t = new Transport(BUFSIZE, APP); 
+            
+
+         //   sendFile(clientFile.ToString(), LIB.check_File_Exists (clientFile),t);
+
 		}
 
 		/// <summary>
@@ -45,7 +49,6 @@ namespace Application
                 long sentBytes = 0;
                 byte[] data = new byte[BUFSIZE];
                 int count = 0;
-                transport = new Transport(BUFSIZE,APP);
 
                 Console.WriteLine("Sending file to client...");
                 while (fileSize > sentBytes)
@@ -67,20 +70,21 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-            //new file_server();
+            new file_server();
 
             // Link lag test
-            var linkLag = new Link(1000, "server");
+      //      var linkLag = new Link(1000, "server");
 
-		    var toReceive = new byte[10];
+		    //var toReceive = new byte[10];
 
-		    linkLag.receive(ref toReceive);
+		    //linkLag.receive(ref toReceive);
 
-		    foreach (var b in toReceive)
-		    {
-		        Console.Write((char)b);
-		    }
+		    //foreach (var b in toReceive)
+		    //{
+		    //    Console.Write((char)b);
+		    //}
 
 		}
 	}
 }
+ 
