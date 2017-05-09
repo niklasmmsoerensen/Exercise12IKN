@@ -29,12 +29,13 @@ namespace Application
 
 		    while (true)
 		    {
-		        Console.WriteLine("Waiting for filename...");
-		        var clientFileBuffer = new byte[BUFSIZE];
+                Console.WriteLine("Waiting for filename...");
+                byte[] clientFileBuffer = new byte[BUFSIZE];
+                t.receive(ref clientFileBuffer);
                 string clientFile = Encoding.ASCII.GetString(clientFileBuffer);
                 // Nedestående linje var udkommenteret i TCP koden
                 //clientFile = LIB.extractFileName(clientFile);
-		        Console.WriteLine("File requested: " + clientFile);
+                Console.WriteLine("File requested: " + clientFile);
 
 		        if (LIB.check_File_Exists(clientFile) > 0)
 		        {
@@ -48,9 +49,11 @@ namespace Application
 		        }
 		        else
 		        {
-		            Console.WriteLine("File does not exist!");
-		            string error = "Error: File does not exist on server.";
-		        }
+                    Console.WriteLine("File does not exist!");
+                    string error = "Error: File does not exist on server.";
+                    byte[] errorBytes = Encoding.ASCII.GetBytes(error);
+                    t.send(errorBytes, errorBytes.Length);
+                }
 
 		    }
 		}
@@ -95,9 +98,9 @@ namespace Application
         public static void Main (string[] args)
 		{
 
-            //new file_server();
+            new file_server();
 
-            ///*
+            /*
             var transportLag = new Transport(1000, "test");
             var toReceive = new byte[1000];
 
@@ -119,7 +122,7 @@ namespace Application
             {
                 Console.Write((char)b);
             }
-            //*/
+            */
 
             /*
             // Link lag test
