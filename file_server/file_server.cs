@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Transportlaget;
@@ -23,11 +24,35 @@ namespace Application
         /// </summary>
         private file_server ()
 		{
-            Transport t = new Transport(BUFSIZE, APP); 
-            
+		    Console.WriteLine("Starting server...");
+            Transport t = new Transport(BUFSIZE, APP);
 
-         //   sendFile(clientFile.ToString(), LIB.check_File_Exists (clientFile),t);
+		    while (true)
+		    {
+		        Console.WriteLine("Waiting for filename...");
+		        var clientFileBuffer = new byte[BUFSIZE];
+                string clientFile = Encoding.ASCII.GetString(clientFileBuffer);
+                // Nedestående linje var udkommenteret i TCP koden
+                //clientFile = LIB.extractFileName(clientFile);
+		        Console.WriteLine("File requested: " + clientFile);
 
+		        if (LIB.check_File_Exists(clientFile) > 0)
+		        {
+		            Console.WriteLine("Sending filesize to client...");
+		            string fileSize = LIB.check_File_Exists(clientFile).ToString();
+                    byte[] fileSizeBytes = Encoding.ASCII.GetBytes(fileSize);
+                    t.send(fileSizeBytes, fileSizeBytes.Length);
+
+		            Console.WriteLine("Sending file to client...");
+                    sendFile(clientFile, long.Parse(fileSize), t);
+		        }
+		        else
+		        {
+		            Console.WriteLine("File does not exist!");
+		            string error = "Error: File does not exist on server.";
+		        }
+
+		    }
 		}
 
 		/// <summary>
@@ -50,7 +75,6 @@ namespace Application
                 byte[] data = new byte[BUFSIZE];
                 int count = 0;
 
-                Console.WriteLine("Sending file to client...");
                 while (fileSize > sentBytes)
                 {
                     count = SourceStream.Read(data, 0, data.Length);

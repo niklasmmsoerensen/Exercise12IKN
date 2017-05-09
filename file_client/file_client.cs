@@ -35,7 +35,7 @@ namespace Application
 	    {
             string fileName = args[0];
 
-            Console.WriteLine("Starting Client...");
+            Console.WriteLine("Starting client...");
 
             Transport t = new Transport(BUFSIZE, APP);
 
@@ -48,8 +48,7 @@ namespace Application
 	        t.receive(ref fileSizeBuffer);
             string fileSize = Encoding.ASCII.GetString(fileSizeBuffer);
 
-            // TODO opdater fejlmeddelelse fra serveren 
-	        if (fileSize == "FEJLMEDDELELSE FRA SERVER")
+	        if (fileSize == "Error: File does not exist on server.")
 	        {
 	            Console.WriteLine(fileSize);
 	            return;
