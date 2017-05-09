@@ -106,22 +106,22 @@ namespace Application
 		    byte[] toSend = Encoding.ASCII.GetBytes(besked);
 
 
-		    /*
+            /*
             // Transportlag test
             
             var transportLag = new Transport(1000, "test");
 
             System.Threading.Thread.Sleep(1000);
 
-            transportLag.send(toSend, 1000);
+            transportLag.send(toSend, toSend.Length);
 
             System.Threading.Thread.Sleep(1000);
 
-            transportLag.send(toSend, 1000);
+            transportLag.send(toSend, toSend.Length);
 
             System.Threading.Thread.Sleep(1000);
 
-            transportLag.send(toSend, 1000);
+            transportLag.send(toSend, toSend.Length);
             */
 
             /*
@@ -129,6 +129,6 @@ namespace Application
 		    //var linkLag = new Link(1000, "client");
 		    //linkLag.send(toSend, toSend.Length);
             */
-		}
+        }
     }
 }
