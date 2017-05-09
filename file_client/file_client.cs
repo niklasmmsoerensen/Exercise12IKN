@@ -96,14 +96,19 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
+            /*
             // Applikationslag test
             new file_client(args);
+            */
 
 
-            /*
-            //transportlag test
-            var toSend = new byte[7] { (byte)'a', (byte)'y', (byte)'y', (byte)'l', (byte)'m', (byte)'a', (byte)'o' };
+		    string besked = "Gik det her okay?";
+		    byte[] toSend = Encoding.ASCII.GetBytes(besked);
 
+
+		    /*
+            // Transportlag test
+            
             var transportLag = new Transport(1000, "test");
 
             System.Threading.Thread.Sleep(1000);
@@ -119,10 +124,10 @@ namespace Application
             transportLag.send(toSend, 1000);
             */
 
-            // Linklag test
-            //var linkLag = new Link(1000, "client");
-            //linkLag.send(toSend, 7);
+		    // Linklag test
+		    //var linkLag = new Link(1000, "client");
+		    //linkLag.send(toSend, toSend.Length);
 
-        }
+		}
     }
 }

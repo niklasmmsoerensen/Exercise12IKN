@@ -97,11 +97,16 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-
+            /*
+            // Applikationslag test
             new file_server();
+            */
+            
+
 
             /*
-            var transportLag = new Transport(1000, "test");
+            // Transportlag test
+            var transportLag = new Transport(1000, "betyderikkenoget");
             var toReceive = new byte[1000];
 
 
@@ -124,11 +129,13 @@ namespace Application
             }
             */
 
+
+
             /*
             // Link lag test
-      		var linkLag = new Link(1000, "server");
+      		var linkLag = new Link(1000, "betyderikkenoget");
 
-		    var toReceive = new byte[10];
+		    var toReceive = new byte[1000];
 
 		    linkLag.receive(ref toReceive);
 
@@ -136,6 +143,8 @@ namespace Application
 		    {
 		        Console.Write((char)b);
 		    }
+
+		    Console.WriteLine("\n" + toReceive.Length);
 			*/
         }
     }
