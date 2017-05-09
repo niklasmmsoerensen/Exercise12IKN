@@ -16,6 +16,9 @@ namespace Application
 		private const int BUFSIZE = 1000;
 		private const string APP = "FILE_CLIENT";
 
+        // følgende er tilføjet af os
+        private string fileSize = "";
+        private byte[] buffer = new byte[1000];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="file_client"/> class.
@@ -31,10 +34,29 @@ namespace Application
         /// </param>
         private file_client(String[] args)
 	    {
-            Transport t = new Transport(BUFSIZE, APP);
-	        string fileName = args[0];
-            receiveFile(fileName,t);
+            string fileName = args[0];
 
+            Console.WriteLine("Starting Client...");
+
+            Transport t = new Transport(BUFSIZE, APP);
+
+            Console.WriteLine("Sending filename to server...");
+	        byte[] fileNameBytes = Encoding.ASCII.GetBytes(fileName);
+            t.send(fileNameBytes, fileNameBytes.Length);
+
+	        Console.WriteLine("Waiting for filesize...");
+	        t.receive(ref buffer);
+            string fileSize = Encoding.ASCII.GetString(buffer);
+
+            // TODO opdater fejlmeddelelse fra serveren 
+	        if (fileSize == "FEJLMEDDELELSE FRA SERVER")
+	        {
+	            Console.WriteLine(fileSize);
+	            return;
+	        }
+	        Console.WriteLine("File size: " + fileSize);
+
+            receiveFile(fileName,t);
         }
 
 		/// <summary>
@@ -75,6 +97,7 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
+            // Applikationslag test
             //new file_client(args);
 
 
