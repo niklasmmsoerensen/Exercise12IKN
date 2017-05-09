@@ -97,10 +97,10 @@ namespace Application
         public static void Main (string[] args)
 		{
             // Applikationslag test
-            //new file_client(args);
+            new file_client(args);
 
 
-
+            /*
             //transportlag test
             var toSend = new byte[7] { (byte)'a', (byte)'y', (byte)'y', (byte)'l', (byte)'m', (byte)'a', (byte)'o' };
 
@@ -117,7 +117,7 @@ namespace Application
             System.Threading.Thread.Sleep(1000);
 
             transportLag.send(toSend, 1000);
-
+            */
 
             // Linklag test
             //var linkLag = new Link(1000, "client");
