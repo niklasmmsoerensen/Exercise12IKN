@@ -74,27 +74,49 @@ namespace Linklaget
 
             sendBuf[0] = DELIMITER;
 
-            foreach (var bufferByte in buf)
-            {
-                if (bufferByte == (byte)'A')
-                {
-                    sendBuf[i] = (byte)'B';
-                    i++;
-                    sendBuf[i] = (byte)'C';
-                }
-                else if (bufferByte == (byte)'B')
-                {
-                    sendBuf[i] = (byte)'B';
-                    i++;
-                    sendBuf[i] = (byte)'D';
-                }
-                else
-                {
-                    sendBuf[i] = bufferByte;
-                }
+            //foreach (var bufferByte in buf)
+            //{
+            //    if (bufferByte == (byte)'A')
+            //    {
+            //        sendBuf[i] = (byte)'B';
+            //        i++;
+            //        sendBuf[i] = (byte)'C';
+            //    }
+            //    else if (bufferByte == (byte)'B')
+            //    {
+            //        sendBuf[i] = (byte)'B';
+            //        i++;
+            //        sendBuf[i] = (byte)'D';
+            //    }
+            //    else
+            //    {
+            //        sendBuf[i] = bufferByte;
+            //    }
 
-                i++;
-            }
+            //    i++;
+            //}
+
+		    for (int k = 0; k < size; k++)
+		    {
+		        if (buf[k] == (byte)'A')
+		        {
+		            sendBuf[i] = (byte)'B';
+		            i++;
+		            sendBuf[i] = (byte)'C';
+		        }
+		        else if (buf[k] == (byte)'B')
+		        {
+		            sendBuf[i] = (byte)'B';
+		            i++;
+		            sendBuf[i] = (byte)'D';
+		        }
+		        else
+		        {
+		            sendBuf[i] = buf[k];
+		        }
+		        i++;
+		    }
+
             sendBuf[i] = DELIMITER;
 
             //foreach (var x in buf)
