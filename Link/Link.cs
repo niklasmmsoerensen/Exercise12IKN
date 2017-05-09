@@ -74,42 +74,52 @@ namespace Linklaget
 
             sendBuf[0] = DELIMITER;
 
-            foreach (var bufferByte in buf)
-            {
-                if (bufferByte == (byte)'A')
-                {
-                    sendBuf[i] = (byte)'B';
-                    i++;
-                    sendBuf[i] = (byte)'C';
-                }
-                else if (bufferByte == (byte)'B')
-                {
-                    sendBuf[i] = (byte)'B';
-                    i++;
-                    sendBuf[i] = (byte)'D';
-                }
-                else
-                {
-                    sendBuf[i] = bufferByte;
-                }
+            //foreach (var bufferByte in buf)
+            //{
+            //    if (bufferByte == (byte)'A')
+            //    {
+            //        sendBuf[i] = (byte)'B';
+            //        i++;
+            //        sendBuf[i] = (byte)'C';
+            //    }
+            //    else if (bufferByte == (byte)'B')
+            //    {
+            //        sendBuf[i] = (byte)'B';
+            //        i++;
+            //        sendBuf[i] = (byte)'D';
+            //    }
+            //    else
+            //    {
+            //        sendBuf[i] = bufferByte;
+            //    }
 
-                i++;
-            }
+            //    i++;
+            //}
+
+		    for(int k = 0; k < size; k++)
+		    {
+		        if (buf[k] == (byte)'A')
+		        {
+		            sendBuf[i] = (byte)'B';
+		            i++;
+		            sendBuf[i] = (byte)'C';
+		        }
+		        else if (buf[k] == (byte)'B')
+		        {
+		            sendBuf[i] = (byte)'B';
+		            i++;
+		            sendBuf[i] = (byte)'D';
+		        }
+		        else
+		        {
+		            sendBuf[i] = buf[k];
+		        }
+		        i++;
+		    }
+
             sendBuf[i] = DELIMITER;
 
-            //foreach (var x in buf)
-            //{
-            //    Console.Write(Convert.ToChar(x));
-            //}
-            //Console.WriteLine();
-
-            //foreach (var x in sendBuf)
-            //{
-            //    Console.Write(Convert.ToChar(x));
-            //}
-            //Console.WriteLine();
-
-			serialPort.Write (sendBuf, 0, sendBuf.Length);
+			serialPort.Write (sendBuf, 0, size);
 
 			//serialPort.Close ();
         }
@@ -134,6 +144,7 @@ namespace Linklaget
 
 
             serialPort.Read(buffer, 0, 1);
+            
             while (buffer[0] != DELIMITER)
             {
                 serialPort.Read(buffer, 0, 1);
