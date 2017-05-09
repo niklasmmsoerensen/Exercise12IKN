@@ -75,16 +75,32 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-			//new file_client(args);
-			var toSend = new byte[7] {(byte) 'a', (byte)'y' , (byte)'y' , (byte)'l' , (byte)'m' , (byte)'a' , (byte)'o'};
-			new file_client(args);
+            //new file_client(args);
 
-			//transportlag test
-			var transportLag = new Transport (1000, "test");
-			transportLag.send(toSend, 1000);
-			transportLag.send(toSend, 1000);
-			transportLag.send(toSend, 1000);
 
-		}
-	}
+
+            //transportlag test
+            var toSend = new byte[7] { (byte)'a', (byte)'y', (byte)'y', (byte)'l', (byte)'m', (byte)'a', (byte)'o' };
+
+            var transportLag = new Transport(1000, "test");
+
+            System.Threading.Thread.Sleep(1000);
+
+            transportLag.send(toSend, 1000);
+
+            System.Threading.Thread.Sleep(1000);
+
+            transportLag.send(toSend, 1000);
+
+            System.Threading.Thread.Sleep(1000);
+
+            transportLag.send(toSend, 1000);
+
+
+            // Linklag test
+            //var linkLag = new Link(1000, "client");
+            //linkLag.send(toSend, 7);
+
+        }
+    }
 }

@@ -70,52 +70,47 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-<<<<<<< HEAD
+
             //new file_server();
-			var transportLag = new Transport(1000, "test");
-			var toReceive = new byte[1000];
-=======
-            new file_server();
->>>>>>> 835efeef2e2fc3f8fa575cb6c9c750ee6b10b326
 
-			transportLag.receive (ref toReceive);
-			foreach (var b in toReceive) {
-				Console.Write ((char)b);
-			}
-
-			transportLag.receive (ref toReceive);
-			foreach (var b in toReceive) {
-				Console.Write ((char)b);
-			}
-
-			transportLag.receive (ref toReceive);
-			foreach (var b in toReceive) {
-				Console.Write ((char)b);
-			}
+            ///*
+            var transportLag = new Transport(1000, "test");
+            var toReceive = new byte[1000];
 
 
-			/*
+            transportLag.receive(ref toReceive);
+            foreach (var b in toReceive)
+            {
+                Console.Write((char)b);
+            }
+
+            transportLag.receive(ref toReceive);
+            foreach (var b in toReceive)
+            {
+                Console.Write((char)b);
+            }
+
+            transportLag.receive(ref toReceive);
+            foreach (var b in toReceive)
+            {
+                Console.Write((char)b);
+            }
+            //*/
+
+            /*
             // Link lag test
-      //      var linkLag = new Link(1000, "server");
+      		var linkLag = new Link(1000, "server");
 
-		    //var toReceive = new byte[10];
+		    var toReceive = new byte[10];
 
-		    //linkLag.receive(ref toReceive);
+		    linkLag.receive(ref toReceive);
 
-<<<<<<< HEAD
 		    foreach (var b in toReceive)
 		    {
 		        Console.Write((char)b);
 		    }
 			*/
-=======
-		    //foreach (var b in toReceive)
-		    //{
-		    //    Console.Write((char)b);
-		    //}
->>>>>>> 835efeef2e2fc3f8fa575cb6c9c750ee6b10b326
-
-		}
-	}
+        }
+    }
 }
  
