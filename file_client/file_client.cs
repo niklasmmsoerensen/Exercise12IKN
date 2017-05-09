@@ -18,7 +18,6 @@ namespace Application
 
         // følgende er tilføjet af os
         private string fileSize = "";
-        private byte[] buffer = new byte[1000];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="file_client"/> class.
@@ -45,8 +44,9 @@ namespace Application
             t.send(fileNameBytes, fileNameBytes.Length);
 
 	        Console.WriteLine("Waiting for filesize...");
-	        t.receive(ref buffer);
-            string fileSize = Encoding.ASCII.GetString(buffer);
+	        var fileSizeBuffer = new byte[BUFSIZE];
+	        t.receive(ref fileSizeBuffer);
+            string fileSize = Encoding.ASCII.GetString(fileSizeBuffer);
 
             // TODO opdater fejlmeddelelse fra serveren 
 	        if (fileSize == "FEJLMEDDELELSE FRA SERVER")
@@ -70,21 +70,21 @@ namespace Application
 		/// </param>
 		private void receiveFile (String fileName, Transport transport)
 		{
+		    Console.WriteLine("Receiving file from server...");
             FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
 
+            long receivedBytes = 0;
+		    long fileSizeLong = Int32.Parse(fileSize);
+            int count = 0;
+            byte[] data = new byte[BUFSIZE];
 
-      //      long receivedBytes = 0;
-      //      byte[] data = new byte[BUFSIZE];
 
-		    //int count = transport.receive(ref data);
-            
-		    //while (data.Length > receivedBytes) 
-		    //{
-      //          fs.Write(data, 0, count);
-      //          receivedBytes += count;
-      //          Console.WriteLine(receivedBytes);
-      //      }
-
+            while (fileSizeLong > receivedBytes)
+            {
+                receivedBytes += transport.receive(ref data);
+                fs.Write(data, 0, count);
+                Console.WriteLine(receivedBytes);
+            }
         }
 
 
