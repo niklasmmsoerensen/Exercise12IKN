@@ -124,10 +124,11 @@ namespace Application
             transportLag.send(toSend, 1000);
             */
 
+            /*
 		    // Linklag test
 		    //var linkLag = new Link(1000, "client");
 		    //linkLag.send(toSend, toSend.Length);
-
+            */
 		}
     }
 }
