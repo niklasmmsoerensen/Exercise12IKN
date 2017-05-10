@@ -102,7 +102,7 @@ namespace Transportlaget
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
 
-            /*
+            ///*
             // bitfejl
             if (++errorCount == 2)
             {
@@ -132,13 +132,13 @@ namespace Transportlaget
                 Array.Copy(buf, 0, buffer, 4, size);
 
                 checksum.calcChecksum(ref buffer, size);
-                /*
+                ///*
                 if (++errorCount == 2)
                 {
                     buffer[1]++;
                     Console.WriteLine("NOISE! - Byte #2 is damaged in the first transmission!");
                 }
-                */
+                //*/
                 link.send(buffer, size+4);
             } while (!receiveAck());
 
@@ -165,31 +165,11 @@ namespace Transportlaget
 
                 sendAck(status);
 
-            } while (!status); // checkchecksum skal muligvis ikke kaldes med size-4
+            } while (!status); 
 
             old_seqNo = buffer[2];
             Array.Copy(buffer, 4, buf, 0, size - 4);
             return size - 4;
-
-            //bool status = false;
-            //do
-            //{
-            //    int size = link.receive(ref buffer);
-            //    status = checksum.checkChecksum(buffer, size-4);
-
-            //    sendAck(status);
-
-            //    if (status == true)
-            //    {
-            //        Array.Copy(buffer, 4, buf, 0, size - 4);
-            //        //buf = buffer;
-            //        //Array.Resize(ref buf, size);
-            //        return size;
-            //    }
-
-            //} while (status == false);
-
-            //return 1;
         }
     }
 }

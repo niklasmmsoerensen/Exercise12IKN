@@ -33,6 +33,7 @@ namespace Application
                 byte[] clientFileBuffer = new byte[BUFSIZE];
                 t.receive(ref clientFileBuffer);
                 string clientFile = Encoding.ASCII.GetString(clientFileBuffer);
+                clientFile = clientFile.Replace("\0", string.Empty);
                 // Nedestående linje var udkommenteret i TCP koden
                 //clientFile = LIB.extractFileName(clientFile);
                 Console.WriteLine("File requested: " + clientFile);
@@ -97,10 +98,10 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-            /*
+            ///*
             // Applikationslag test
             new file_server();
-            */
+            //*/
             
 
 
