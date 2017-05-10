@@ -165,31 +165,11 @@ namespace Transportlaget
 
                 sendAck(status);
 
-            } while (!status); // checkchecksum skal muligvis ikke kaldes med size-4
+            } while (!status); 
 
             old_seqNo = buffer[2];
             Array.Copy(buffer, 4, buf, 0, size - 4);
             return size - 4;
-
-            //bool status = false;
-            //do
-            //{
-            //    int size = link.receive(ref buffer);
-            //    status = checksum.checkChecksum(buffer, size-4);
-
-            //    sendAck(status);
-
-            //    if (status == true)
-            //    {
-            //        Array.Copy(buffer, 4, buf, 0, size - 4);
-            //        //buf = buffer;
-            //        //Array.Resize(ref buf, size);
-            //        return size;
-            //    }
-
-            //} while (status == false);
-
-            //return 1;
         }
     }
 }
