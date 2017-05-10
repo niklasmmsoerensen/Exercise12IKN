@@ -37,7 +37,7 @@ namespace Application
                 //clientFile = LIB.extractFileName(clientFile);
                 Console.WriteLine("File requested: " + clientFile);
 
-		        if (LIB.check_File_Exists(clientFile) > 0)
+		        if (LIB.check_File_Exists(clientFile) != 0)
 		        {
 		            Console.WriteLine("Sending filesize to client...");
 		            string fileSize = LIB.check_File_Exists(clientFile).ToString();

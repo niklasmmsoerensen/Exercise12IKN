@@ -48,7 +48,7 @@ namespace Application
 	        t.receive(ref fileSizeBuffer);
             fileSize = Encoding.ASCII.GetString(fileSizeBuffer);
 
-	        if (fileSize == "Error: File does not exist on server.")
+	        if (fileSize.Contains("Error"))
 	        {
 	            Console.WriteLine(fileSize);
 	            return;

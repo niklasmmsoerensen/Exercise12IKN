@@ -133,7 +133,9 @@ namespace Transportlaget
             do
             {
                 // reset buffer length (so it is not only 4)
-                buffer = new byte[lengthOfBuffer];
+                //buffer = new byte[lengthOfBuffer];
+                buffer = new byte[1000 + (int)TransSize.ACKSIZE];
+
 
                 buffer[(int)TransCHKSUM.SEQNO] = (byte)seqNo;
                 buffer[(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
@@ -189,6 +191,7 @@ namespace Transportlaget
                 {
                     Array.Copy(buffer, 4, buf, 0, size - 4);
                     //buf = buffer;
+                    //Array.Resize(ref buf, size);
                     return size;
                 }
 
