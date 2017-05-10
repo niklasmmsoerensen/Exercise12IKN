@@ -102,7 +102,7 @@ namespace Transportlaget
             ackBuf[(int)TransCHKSUM.TYPE] = (byte)(int)TransType.ACK;
             checksum.calcChecksum(ref ackBuf, (int)TransSize.ACKSIZE);
 
-            // /*
+            /*
             // bitfejl
             if (++errorCount == 2)
             {
@@ -125,45 +125,24 @@ namespace Transportlaget
 		/// </param>
 		public void send(byte[] buf, int size)
 		{
-            // TO DO Your own code
-            int counter = 0;
-
-            // Remember buffer length
-            int lengthOfBuffer = buffer.Length;
             do
             {
-                // reset buffer length (so it is not only 4)
-                //buffer = new byte[lengthOfBuffer];
-                buffer = new byte[1000 + (int)TransSize.ACKSIZE];
-
-
                 buffer[(int)TransCHKSUM.SEQNO] = (byte)seqNo;
                 buffer[(int)TransCHKSUM.TYPE] = (byte)TransType.DATA;
                 Array.Copy(buf, 0, buffer, 4, size);
-                
-                checksum.calcChecksum(ref buffer, size);
 
-                // /*
-                // bitfejl
+                checksum.calcChecksum(ref buffer, size);
+                /*
                 if (++errorCount == 2)
                 {
                     buffer[1]++;
                     Console.WriteLine("NOISE! - Byte #2 is damaged in the first transmission!");
                 }
-                //*/
-
+                */
                 link.send(buffer, size+4);
-                counter++;
+            } while (!receiveAck());
 
-            } while (!receiveAck() && counter < 5);
-            if (counter > 5)
-            { //timeout
-                Console.WriteLine("Timeout from send, counter > 5");
-            }
-            old_seqNo = seqNo;
-            
-            // reset buffer length (so it is not only 4)
-            buffer = new byte[lengthOfBuffer];
+		    old_seqNo = DEFAULT_SEQNO;
         }
 
         /// <summary>
