@@ -1,0 +1,8 @@
+Receive funktionen i transportlaget skal modtage data og vurdere om transmitteringen er OK. 
+Dette realiseres ved at den modtager data ved hjælp af linklaget indtil checksum og sekvensnummer er som forventet.
+Det gamle sekvensnummer (fra forrige pakke) gemmes, således der kan tjekkes at det ikke er dette sekvensnummer
+der modtages i den aktuelle pakke. Hvis dette er tilfældet er der nemlig gået noget galt i transmitteringen, 
+og der sendes derfor et NACK. Disse transmitteringsfejl simuleres fra receivesiden i sendAck funktionen, ved at 
+2. byte bliver beskadiget. 
+En vigtig detajle i slutningen af funktionen er, at der kun sendes den betydende del af dataen tilbage, 
+dvs. uden de 4 første bytes som indeholder sekvensnummer, checksum og type. 
