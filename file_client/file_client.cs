@@ -17,7 +17,7 @@ namespace Application
 		private const string APP = "FILE_CLIENT";
 
         // følgende er tilføjet af os
-        private string fileSize = "";
+	    private string fileSize;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="file_client"/> class.
@@ -46,7 +46,7 @@ namespace Application
 	        Console.WriteLine("Waiting for filesize...");
 	        var fileSizeBuffer = new byte[BUFSIZE];
 	        t.receive(ref fileSizeBuffer);
-            string fileSize = Encoding.ASCII.GetString(fileSizeBuffer);
+            fileSize = Encoding.ASCII.GetString(fileSizeBuffer);
 
 	        if (fileSize == "Error: File does not exist on server.")
 	        {
@@ -77,11 +77,11 @@ namespace Application
             int count = 0;
             byte[] data = new byte[BUFSIZE];
 
-
             while (fileSizeLong > receivedBytes)
             {
-                receivedBytes += transport.receive(ref data);
+                count = transport.receive(ref data);
                 fs.Write(data, 0, count);
+                receivedBytes += count;
                 Console.WriteLine(receivedBytes);
             }
         }

@@ -187,7 +187,7 @@ namespace Transportlaget
 
                 if (status == true)
                 {
-                    Array.Copy(buffer, 4, buf, 0, buffer.Length - 4);
+                    Array.Copy(buffer, 4, buf, 0, size - 4);
                     //buf = buffer;
                     return size;
                 }
