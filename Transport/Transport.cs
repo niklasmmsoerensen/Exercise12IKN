@@ -154,11 +154,18 @@ namespace Transportlaget
         public int receive(ref byte[] buf)
         {
             int size;
+            bool status;
             do
             {
-                size = link.receive(ref buffer);
 
-            } while (!checksum.checkChecksum(buffer, size - 4) || buffer[2] == old_seqNo); // checkchecksum skal muligvis ikke kaldes med size-4
+                size = link.receive(ref buffer);
+                bool checkStatus = checksum.checkChecksum(buffer, size - 4);
+                bool seqStatus = buffer[2] != old_seqNo;
+                status = checkStatus && seqStatus;
+
+                sendAck(status);
+
+            } while (!status); // checkchecksum skal muligvis ikke kaldes med size-4
 
             old_seqNo = buffer[2];
             Array.Copy(buffer, 4, buf, 0, size - 4);
