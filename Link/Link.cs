@@ -178,8 +178,8 @@ namespace Linklaget
             // buf rettes
             byte[] tempbuffer = temp.ToArray();
             Array.Copy(tempbuffer, 0, buf,0,tempbuffer.Length);
-            
-            return buf.Length;
+
+            return tempbuffer.Length;
         }
 
 

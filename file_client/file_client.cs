@@ -84,6 +84,8 @@ namespace Application
                 receivedBytes += count;
                 Console.WriteLine(receivedBytes);
             }
+
+            Console.WriteLine("File received, " + receivedBytes + " bytes");
         }
 
 
@@ -96,19 +98,21 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-            /*
+            ///*
             // Applikationslag test
             new file_client(args);
-            */
+            //*/
 
 
-		    string besked = "Gik det her okay?";
-		    byte[] toSend = Encoding.ASCII.GetBytes(besked);
+            string besked = "Gik det her okay?";
+            string besked2 = " la la la la la la la la la la la";
+            byte[] toSend = Encoding.ASCII.GetBytes(besked);
+            byte[] toSend2 = Encoding.ASCII.GetBytes(besked2);
 
 
             /*
             // Transportlag test
-            
+
             var transportLag = new Transport(1000, "test");
 
             System.Threading.Thread.Sleep(1000);
@@ -117,12 +121,12 @@ namespace Application
 
             System.Threading.Thread.Sleep(1000);
 
-            transportLag.send(toSend, toSend.Length);
+            transportLag.send(toSend2, toSend2.Length);
 
             System.Threading.Thread.Sleep(1000);
 
             transportLag.send(toSend, toSend.Length);
-            */
+            //*/
 
             /*
 		    // Linklag test

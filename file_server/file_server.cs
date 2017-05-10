@@ -97,10 +97,10 @@ namespace Application
         /// </param>
         public static void Main (string[] args)
 		{
-            /*
+            ///*
             // Applikationslag test
             new file_server();
-            */
+            //*/
             
 
 
