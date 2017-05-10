@@ -153,30 +153,36 @@ namespace Transportlaget
         /// </param>
         public int receive(ref byte[] buf)
         {
-            // receieve data selv med brug af link laget
-            // K�r data igennem checkchecksum funktion
-            // kald funktionen sendack og brug returv�rdien fra checkchecksum som parameter
-            // muligvis noget loop
-
-            bool status = false;
+            int size;
             do
             {
-                int size = link.receive(ref buffer);
-                status = checksum.checkChecksum(buffer, size-4);
+                size = link.receive(ref buffer);
 
-                sendAck(status);
+            } while (!checksum.checkChecksum(buffer, size - 4) || buffer[2] == old_seqNo); // checkchecksum skal muligvis ikke kaldes med size-4
 
-                if (status == true)
-                {
-                    Array.Copy(buffer, 4, buf, 0, size - 4);
-                    //buf = buffer;
-                    //Array.Resize(ref buf, size);
-                    return size;
-                }
+            old_seqNo = buffer[2];
+            Array.Copy(buffer, 4, buf, 0, size - 4);
+            return size - 4;
 
-            } while (status == false);
+            //bool status = false;
+            //do
+            //{
+            //    int size = link.receive(ref buffer);
+            //    status = checksum.checkChecksum(buffer, size-4);
 
-            return 1;
+            //    sendAck(status);
+
+            //    if (status == true)
+            //    {
+            //        Array.Copy(buffer, 4, buf, 0, size - 4);
+            //        //buf = buffer;
+            //        //Array.Resize(ref buf, size);
+            //        return size;
+            //    }
+
+            //} while (status == false);
+
+            //return 1;
         }
     }
 }
